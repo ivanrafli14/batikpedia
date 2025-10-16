@@ -24,20 +24,33 @@ class NavbarView extends GetView<NavbarController> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: controller.currentTab.value,
         onTap: controller.changeTab,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Color(0xFF0B506C),
         unselectedItemColor: Colors.grey,
+        selectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w400,
+
+        ),
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.language),
             label: 'Gallery',
+
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.info),
             label: 'Info',
+
           ),
         ],
       ),

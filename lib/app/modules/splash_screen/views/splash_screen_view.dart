@@ -8,10 +8,6 @@ class SplashScreenView extends GetView<SplashScreenController> {
   const SplashScreenView({super.key});
   @override
   Widget build(BuildContext context) {
-    Future.delayed(
-      const Duration(seconds: 3),
-          () => controller.navigateToNavbar(),
-    );
 
     return Scaffold(
       body: Container(
@@ -24,7 +20,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset('assets/images/logo.png'),
+                      Image.asset('assets/images/logo.png', width: 225),
                       const SizedBox(height: 14),
                       const Text(
                         'BatikPedia',
@@ -50,7 +46,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset('assets/images/ub.png'),
+                      Image.asset('assets/images/ub.png', height: 26),
                       Container(
                         width: 2,
                         height: 20,
@@ -60,7 +56,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
-                      Image.asset('assets/images/ritsu.png'),
+                      Image.asset('assets/images/ritsu.png',height: 23),
                       Container(
                         width: 2,
                         height: 20,
@@ -70,7 +66,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
-                      Image.asset('assets/images/gub.png'),
+                      Image.asset('assets/images/gub.png',height: 21),
                     ],
                   ),
                   const SizedBox(height: 40),
