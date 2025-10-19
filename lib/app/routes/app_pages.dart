@@ -2,6 +2,10 @@ import 'package:get/get.dart';
 
 import '../modules/about/bindings/about_binding.dart';
 import '../modules/about/views/about_view.dart';
+import '../modules/ai/bindings/ai_binding.dart';
+import '../modules/ai/views/ai_view.dart';
+import '../modules/detail_batik/bindings/detail_batik_binding.dart';
+import '../modules/detail_batik/views/detail_batik_view.dart';
 import '../modules/gallery/bindings/gallery_binding.dart';
 import '../modules/gallery/views/gallery_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -43,6 +47,16 @@ class AppPages {
       name: _Paths.NAVBAR,
       page: () => const NavbarView(),
       binding: NavbarBinding(),
+    ),
+    GetPage(
+      name: _Paths.AI,
+      page: () => const AiView(),
+      binding: AiBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_BATIK,
+      page: () => const DetailBatikView(),
+      binding: DetailBatikBinding(),
     ),
   ];
 }

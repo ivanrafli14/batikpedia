@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:batikpedia/app/data/photo_model.dart';
 
 class BatikModel {
+  int id;
   String name;
   String artist;
   int year;
@@ -9,6 +10,7 @@ class BatikModel {
   List<PhotoModel> images;
 
   BatikModel({
+    this.id = 0,
     required this.name,
     required this.artist,
     required this.year,
@@ -35,6 +37,7 @@ class BatikModel {
     }
 
     return BatikModel(
+      id: json['id'] is int ? json['id'] : 0,
       name: json['nama'] ?? '',
       artist: json['seniman'] ?? '',
       year: (json['tahun'] is int)
