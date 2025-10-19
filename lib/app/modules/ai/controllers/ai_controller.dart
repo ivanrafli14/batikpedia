@@ -1,3 +1,4 @@
+import 'package:batikpedia/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class AiController extends GetxController {
@@ -19,5 +20,11 @@ class AiController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void goToGenerateBatik(){
+    Get.toNamed(Routes.GENERATE_BATIK);
+  }
+
+  void goToDetectBatik(){
+    Get.toNamed(Routes.DETECT_BATIK);
+  }
 }

@@ -6,8 +6,12 @@ import '../modules/ai/bindings/ai_binding.dart';
 import '../modules/ai/views/ai_view.dart';
 import '../modules/detail_batik/bindings/detail_batik_binding.dart';
 import '../modules/detail_batik/views/detail_batik_view.dart';
+import '../modules/detect_batik/bindings/detect_batik_binding.dart';
+import '../modules/detect_batik/views/detect_batik_view.dart';
 import '../modules/gallery/bindings/gallery_binding.dart';
 import '../modules/gallery/views/gallery_view.dart';
+import '../modules/generate_batik/bindings/generate_batik_binding.dart';
+import '../modules/generate_batik/views/generate_batik_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/navbar/bindings/navbar_binding.dart';
@@ -57,6 +61,16 @@ class AppPages {
       name: _Paths.DETAIL_BATIK,
       page: () => const DetailBatikView(),
       binding: DetailBatikBinding(),
+    ),
+    GetPage(
+      name: _Paths.GENERATE_BATIK,
+      page: () => const GenerateBatikView(),
+      binding: GenerateBatikBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETECT_BATIK,
+      page: () => const DetectBatikView(),
+      binding: DetectBatikBinding(),
     ),
   ];
 }

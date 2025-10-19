@@ -10,6 +10,8 @@ abstract class Routes {
   static const NAVBAR = _Paths.NAVBAR;
   static const AI = _Paths.AI;
   static const DETAIL_BATIK = _Paths.DETAIL_BATIK;
+  static const GENERATE_BATIK = _Paths.GENERATE_BATIK;
+  static const DETECT_BATIK = _Paths.DETECT_BATIK;
 }
 
 abstract class _Paths {
@@ -21,4 +23,6 @@ abstract class _Paths {
   static const NAVBAR = '/navbar';
   static const AI = '/ai';
   static const DETAIL_BATIK = '/detail-batik';
+  static const GENERATE_BATIK = '/generate-batik';
+  static const DETECT_BATIK = '/detect-batik';
 }
