@@ -11,7 +11,12 @@ class SplashScreenView extends GetView<SplashScreenController> {
 
     return Scaffold(
       body: Container(
-        color: Color(0xFFFAFAFA),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/splash.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Center(
           child: Column(
             children: [
@@ -69,7 +74,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
                       Image.asset('assets/images/gub.png',height: 21),
                     ],
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 100),
                 ],
               ),
             ],

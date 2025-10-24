@@ -1,15 +1,11 @@
 import 'package:batikpedia/app/data/batik_model.dart';
 import 'package:batikpedia/app/data/city_model.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
+import 'package:shimmer/shimmer.dart';
 import '../controllers/home_controller.dart';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
-
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -19,7 +15,16 @@ class HomeView extends GetView<HomeController> {
       child: SafeArea(
         child: Obx(() {
           if (controller.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(),
+                  _buildSkeletonBatikCollectionsSection(),
+                  _buildSkeletonCitiesSection(),
+                ],
+              ),
+            );
           }
 
           return SingleChildScrollView(
@@ -54,7 +59,7 @@ class HomeView extends GetView<HomeController> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.teal[800],
+        color: Color(0xFF0B506C),
       ),
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
@@ -82,7 +87,7 @@ class HomeView extends GetView<HomeController> {
               },
               options: CarouselOptions(
                 height: 235,
-                viewportFraction: 0.55,
+                viewportFraction: 0.5,
                 autoPlay: true,
                 autoPlayInterval: const Duration(seconds: 3),
                 autoPlayAnimationDuration: const Duration(milliseconds: 800),
@@ -130,57 +135,58 @@ class HomeView extends GetView<HomeController> {
                 topLeft: Radius.circular(18),
                 topRight: Radius.circular(18),
               ),
-              child: AspectRatio(
-                aspectRatio: 180 / 145,
-                child: RepaintBoundary(
-                  child: imageUrl.isNotEmpty
-                      ? Image.network(
-                    imageUrl,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    cacheWidth: 500,
-                    cacheHeight: 600,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                        color: Colors.grey[200],
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                                : null,
-                            strokeWidth: 2,
-                          ),
+              child: RepaintBoundary(
+                child: imageUrl.isNotEmpty
+                    ? Image.network(
+                  imageUrl,
+                  width: double.infinity,
+                  // height: 165,
+                  fit: BoxFit.cover,
+                  cacheWidth: 600,
+                  cacheHeight: 600,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      color: Colors.grey[200],
+                      width: double.infinity,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                              : null,
+                          strokeWidth: 2,
                         ),
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      print('Error loading image: $error');
-                      return Container(
-                        color: Colors.grey[200],
-                        child: const Icon(
-                          Icons.broken_image,
-                          size: 50,
-                          color: Colors.grey,
-                        ),
-                      );
-                    },
-                  )
-                      : Container(
-                    color: Colors.grey[200],
-                    child: const Icon(
-                      Icons.image,
-                      size: 50,
-                      color: Colors.grey,
-                    ),
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    print('Error loading image: $error');
+                    return Container(
+                      color: Colors.grey[200],
+                      width: double.infinity,
+                      child: const Icon(
+                        Icons.broken_image,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
+                    );
+                  },
+                )
+                    : Container(
+                  color: Colors.grey[200],
+                  width: double.infinity,
+                  child: const Icon(
+                    Icons.image,
+                    size: 50,
+                    color: Colors.grey,
                   ),
                 ),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
+            padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -189,24 +195,25 @@ class HomeView extends GetView<HomeController> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 13,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 3),
+                const SizedBox(height: 8),
                 if (item.themes.isNotEmpty)
                   Container(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.teal[800],
+                      color: Color(0xFF0B506C),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      item.themes.first,
+                      item.themes.first[0].toUpperCase() + item.themes.first.substring(1),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 10,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600
                       ),
                     ),
                   ),
@@ -217,7 +224,6 @@ class HomeView extends GetView<HomeController> {
       ),
     );
   }
-
 
   Widget _buildPageIndicator() {
     return Obx(() => Row(
@@ -260,7 +266,7 @@ class HomeView extends GetView<HomeController> {
                 icon: const Icon(Icons.explore, size: 18),
                 label: const Text('Discover More'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal[800],
+                  backgroundColor: Color(0xFF0B506C),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -366,10 +372,160 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
+  Widget _buildSkeletonBatikCollectionsSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildShimmerBox(width: 150, height: 20), // Judul section shimmer
+          const SizedBox(height: 16),
 
+          // Grid shimmer card batik
+          SizedBox(
+            height: 260,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 4,
+              itemBuilder: (context, index) => _buildSkeletonCard(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSkeletonCitiesSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header Section (Title + Dummy Button)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 24,
+                  width: 160,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                Container(
+                  height: 36,
+                  width: 130,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Dummy Grid Items
+            GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 1.2,
+              ),
+              itemCount: 4,
+              itemBuilder: (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSkeletonCard() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        width: 180,
+        margin: const EdgeInsets.only(right: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // gambar shimmer
+            Container(
+              height: 160,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(18),
+                  topRight: Radius.circular(18),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 14,
+                    width: 100,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    height: 20,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShimmerBox({double? width, double? height}) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        width: width,
+        height: height,
+        color: Colors.white,
+      ),
+    );
+  }
 }
-
-
 
 
 
