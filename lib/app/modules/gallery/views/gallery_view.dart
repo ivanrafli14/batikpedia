@@ -171,12 +171,18 @@ class GalleryView extends GetView<GalleryController> {
                     itemCount: controller.batikItems.length,
                     itemBuilder: (context, index) {
                       final item = controller.batikItems[index];
+
+                      if(item.images.isNotEmpty){
+                        var optimizedUrl = controller.optimizeCloudinaryUrl(item.images.first.imagePath, width: 600, quality: 70);
+                        item.images.first.imagePath = optimizedUrl;
+                      }
+
                       return GestureDetector(
                         onTap: () {
                           controller.goToDetailPage(item.id);
                         },
                         child: BatikCard(
-                          key: ValueKey(item.name),
+                          key: ValueKey(item.id),
                           item: item,
                         ),
                       );

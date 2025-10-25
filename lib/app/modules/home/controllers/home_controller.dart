@@ -81,4 +81,13 @@ class HomeController extends GetxController {
       snackPosition: SnackPosition.BOTTOM,
     );
   }
+
+  String optimizeCloudinaryUrl(String url, {int width = 600, int quality = 70}) {
+    if (!url.contains('/upload/')) return url;
+    return url.replaceFirst(
+      '/upload/',
+      '/upload/f_auto,q_auto,w_$width,q_$quality/',
+    );
+  }
+
 }

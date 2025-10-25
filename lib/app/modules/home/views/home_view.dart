@@ -107,8 +107,9 @@ class HomeView extends GetView<HomeController> {
   }
 
   Widget _buildBatikCard(BatikModel item, {Key? key}) {
-    final String imageUrl =
-    item.images.isNotEmpty ? item.images.first.imagePath : '';
+    final String imageUrl = item.images.isNotEmpty
+        ? controller.optimizeCloudinaryUrl(item.images.first.imagePath, width: 600, quality: 70)
+        : '';
 
     return Container(
       key: key,

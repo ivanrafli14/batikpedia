@@ -105,4 +105,13 @@ class GalleryController extends GetxController {
       arguments: {'id': batikId},
     );
   }
+
+  String optimizeCloudinaryUrl(String url, {int width = 600, int quality = 70}) {
+    if (url.isEmpty || !url.contains('/upload/')) return url;
+
+    return url.replaceFirst(
+      '/upload/',
+      '/upload/f_auto,q_auto,w_$width,q_$quality/',
+    );
+  }
 }
