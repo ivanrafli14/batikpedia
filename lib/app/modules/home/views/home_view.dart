@@ -75,9 +75,9 @@ class HomeView extends GetView<HomeController> {
           const SizedBox(height: 20),
           Obx(() {
             final items = controller.batikItems;
-            if (items.isEmpty) {
-              return const Center(child: CircularProgressIndicator());
-            }
+            // if (items.isEmpty) {
+            //   return const Center(child: CircularProgressIndicator());
+            // }
 
             return CarouselSlider.builder(
               itemCount: items.length,
@@ -377,9 +377,9 @@ class HomeView extends GetView<HomeController> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildShimmerBox(width: 150, height: 20), // Judul section shimmer
+          _buildShimmerBox(width: 300, height: 32), // Judul section shimmer
           const SizedBox(height: 16),
 
           // Grid shimmer card batik
@@ -410,11 +410,11 @@ class HomeView extends GetView<HomeController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  height: 24,
+                  height: 32,
                   width: 160,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 Container(
@@ -515,18 +515,23 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  Widget _buildShimmerBox({double? width, double? height}) {
+  Widget _buildShimmerBox({
+    double? width,
+    double? height,
+    BorderRadius? borderRadius,
+  }) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      period: const Duration(seconds: 2), // animasi shimmer halus
       child: Container(
-        width: width,
-        height: height,
-        color: Colors.white,
+        width: width ?? double.infinity,
+        height: height ?? 100,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+          borderRadius: borderRadius ?? BorderRadius.circular(10),
+        ),
       ),
     );
   }
 }
-
-
-

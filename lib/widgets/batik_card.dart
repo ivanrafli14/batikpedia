@@ -1,6 +1,7 @@
 import 'package:batikpedia/app/data/batik_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class BatikCard extends StatefulWidget {
   final BatikModel item;
@@ -59,11 +60,14 @@ class _BatikCardState extends State<BatikCard>
                 maxWidthDiskCache: 600,
                 useOldImageOnUrlChange: true,
                 fadeInDuration: const Duration(milliseconds: 200),
-                placeholder: (context, url) => Container(
-                  color: Colors.grey[200],
-                  child: const Center(
-                      child:
-                      CircularProgressIndicator(strokeWidth: 2)),
+                placeholder: (context, url) => Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    height: 120,
+                    width: double.infinity,
+                    color: Colors.white,
+                  ),
                 ),
                 errorWidget: (context, url, error) => Container(
                   color: Colors.grey[200],

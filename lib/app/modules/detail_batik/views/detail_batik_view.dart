@@ -34,7 +34,8 @@ class DetailBatikView extends GetView<DetailBatikController> {
         print("DEBUG groupedSubThemes => ${batik.groupedSubThemes}");
 
 
-        return SingleChildScrollView(
+        return SafeArea(
+          child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,6 +90,7 @@ class DetailBatikView extends GetView<DetailBatikController> {
               ]),
             ],
           ),
+        ),
         );
       }),
     );
