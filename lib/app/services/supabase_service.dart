@@ -6,18 +6,78 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class SupabaseService{
   final SupabaseClient supabase = Supabase.instance.client;
 
+  Future<List<BatikModel>> loadBatikForHomeView({
+    List<int>? ids,
+    int? languageId,
+  }) async {
+
+    final targetIds = ids ?? [432, 437, 362, 435, 429, 436];
+
+    var query = supabase
+        .from('Batik')
+        .select('''
+          id,
+          nama,
+          seniman,
+          tahun,
+          Foto(link),
+          _BatikTema!inner(
+            Tema!inner(
+              id,
+              TemaTranslation(
+                nama,
+                languageId
+              )
+            )
+          )
+        ''')
+        .eq('_BatikTema.Tema.TemaTranslation.languageId', languageId ?? 2)
+        .inFilter('id', targetIds);
+
+
+
+    final response = await query;
+
+    if (response == null) {
+      throw Exception('No data returned from Supabase');
+    }
+
+    print("DEBUG Home Batik Response:");
+    print(response);
+
+    return (response as List)
+        .map((json) => BatikModel.fromJson(json))
+        .toList();
+  }
+
+
   Future<List<BatikModel>> loadBatik({
     int page = 1,
     int limit = 6,
     String? searchQuery,
     List<String>? filteredCities,
+    int? languageId,
   }) async {
     final int start = (page - 1) * limit;
     final int end = start + limit - 1;
 
     var query = supabase
         .from('Batik')
-        .select('id, nama, seniman, tahun, Foto(link), _BatikTema(Tema(nama))');
+        .select('''
+          id,
+          nama,
+          seniman,
+          tahun,
+          Foto(link),
+          _BatikTema(
+            Tema(
+              id,
+              TemaTranslation!inner(nama, languageId)
+            )
+          )
+        ''')
+        .eq('_BatikTema.Tema.TemaTranslation.languageId', languageId ?? 2);
+
 
     if (searchQuery != null && searchQuery.isNotEmpty) {
       query = query.ilike('nama', '%$searchQuery%');
@@ -29,16 +89,23 @@ class SupabaseService{
       }
     }
 
-    final response = await query.order('id', ascending: false).range(start, end);
+    final response = await query
+        .order('tahun', ascending: false)
+        .range(start, end);
 
-    print("Batik:");
+    if (response == null) {
+      throw Exception('No data returned from Supabase');
+    }
+
+    print("DEBUG Batik Response:");
     print(response);
 
-
+    // Convert ke model
     return (response as List)
         .map((json) => BatikModel.fromJson(json))
         .toList();
   }
+
   
   Future<List<CityModel>> loadCity() async {
     final response = await supabase
@@ -53,39 +120,49 @@ class SupabaseService{
         .toList();
   }
 
-  Future<DetailBatikModel> loadDetailBatik(int batikId) async {
+  Future<DetailBatikModel> loadDetailBatik(int batikId, {int? languageId}) async {
     print("Loading detail for Batik ID: $batikId");
 
-    final response = await supabase
+    var query = supabase
         .from('Batik')
         .select('''
-      id,
-      nama,
-      seniman,
-      alamat,
-      tahun,
-      dimensi,
-      Foto(link),
-      _BatikSubTema(
-        SubTema(
-          nama,
-          Tema(nama),
-          SubTemaTranslation(languageId, nama)
-        )
-      ),
-      _BatikTema(Tema(nama)),
-      BatikTranslation(languageId, warna, teknik, jenisKain, pewarna, bentuk, histori)
-    ''')
+        id,
+        nama,
+        seniman,
+        alamat,
+        tahun,
+        dimensi,
+        Foto(link),
+        _BatikTema(
+          Tema(
+            id,
+            TemaTranslation!inner(nama, languageId)
+          )
+        ),
+        _BatikSubTema(
+          SubTema(
+            id,
+            SubTemaTranslation!inner(nama, languageId),
+            Tema(
+              id,
+              TemaTranslation!inner(nama, languageId)
+            )
+          )
+        ),
+        BatikTranslation!inner(languageId, warna, teknik, jenisKain, pewarna, bentuk, histori)
+      ''')
         .eq('id', batikId)
-        .single();
+        .eq('_BatikTema.Tema.TemaTranslation.languageId', languageId ?? 2)
+        .eq('_BatikSubTema.SubTema.SubTemaTranslation.languageId', languageId ?? 2)
+        .eq('BatikTranslation.languageId', languageId ?? 2);
 
-
-
+    final response = await query.single();
 
     print("Detail Batik:");
     print(response);
 
     return DetailBatikModel.fromJson(response);
   }
+
 
 }

@@ -37,31 +37,40 @@ class DetailBatikModel {
 
   factory DetailBatikModel.fromJson(Map<String, dynamic> json) {
 
-    final List<String> parsedThemes = (json['_BatikTema'] as List?)
-        ?.map((bt) => bt['Tema']?['nama']?.toString() ?? '')
-        .where((t) => t.isNotEmpty)
-        .cast<String>()
-        .toList() ??
-        [];
+    final List<String> parsedThemes = [];
+    if (json['_BatikTema'] is List) {
+      for (final bt in json['_BatikTema']) {
+        final tema = bt['Tema'];
+        if (tema != null && tema['TemaTranslation'] is List) {
+          for (final t in tema['TemaTranslation']) {
+            final nama = t['nama']?.toString();
+            if (nama != null && nama.isNotEmpty) {
+              parsedThemes.add(nama);
+            }
+          }
+        }
+      }
+    }
 
 
     final Map<String, List<String>> groupedSubThemes = {};
-
-    if (json['_BatikSubTema'] is List && (json['_BatikSubTema'] as List).isNotEmpty) {
-      for (final entry in (json['_BatikSubTema'] as List)) {
+    if (json['_BatikSubTema'] is List) {
+      for (final entry in json['_BatikSubTema']) {
         final subTema = entry['SubTema'];
         if (subTema == null) continue;
 
-        final themeName = subTema['Tema']?['nama'] ?? 'Unknown';
-        String subName = subTema['nama'] ?? '';
+
+        String themeName = 'Unknown';
+        if (subTema['Tema'] != null && subTema['Tema']['TemaTranslation'] is List) {
+          final trans = (subTema['Tema']['TemaTranslation'] as List).first;
+          themeName = trans['nama'] ?? 'Unknown';
+        }
 
 
+        String subName = '';
         if (subTema['SubTemaTranslation'] is List) {
-          final indo = (subTema['SubTemaTranslation'] as List).firstWhere(
-                (t) => t['languageId'] == 2,
-            orElse: () => null,
-          );
-          subName = indo?['nama'] ?? subName;
+          final trans = (subTema['SubTemaTranslation'] as List).first;
+          subName = trans['nama'] ?? '';
         }
 
         groupedSubThemes.putIfAbsent(themeName, () => []);
@@ -69,16 +78,11 @@ class DetailBatikModel {
       }
     }
 
-    if (groupedSubThemes.isEmpty && json['_BatikTema'] is List) {
-      for (final tema in (json['_BatikTema'] as List)) {
-        final nama = tema['Tema']?['nama'] ?? 'Unknown';
-        groupedSubThemes[nama] = [];
+
+    if (groupedSubThemes.isEmpty && parsedThemes.isNotEmpty) {
+      for (final theme in parsedThemes) {
+        groupedSubThemes.putIfAbsent(theme, () => []);
       }
-    }
-
-
-    for (final theme in parsedThemes) {
-      groupedSubThemes.putIfAbsent(theme, () => []);
     }
 
 
@@ -89,18 +93,21 @@ class DetailBatikModel {
 
 
     String warna = '-', teknik = '-', jenisKain = '-', pewarna = '-', bentuk = '-', histori = '-';
-    if (json['BatikTranslation'] is List) {
-      final indo = (json['BatikTranslation'] as List).firstWhere(
-            (bt) => bt['languageId'] == 2,
-        orElse: () => null,
-      );
-      if (indo != null) {
-        warna = indo['warna'] ?? '-';
-        teknik = indo['teknik'] ?? '-';
-        jenisKain = indo['jenisKain'] ?? '-';
-        pewarna = indo['pewarna'] ?? '-';
-        bentuk = indo['bentuk'] ?? '-';
-        histori = indo['histori'] ?? '-';
+    final translationData = json['BatikTranslation'];
+
+    if (translationData != null) {
+
+      final trans = translationData is List
+          ? (translationData.isNotEmpty ? translationData.first : null)
+          : translationData;
+
+      if (trans != null) {
+        warna = trans['warna'] ?? '-';
+        teknik = trans['teknik'] ?? '-';
+        jenisKain = trans['jenisKain'] ?? '-';
+        pewarna = trans['pewarna'] ?? '-';
+        bentuk = trans['bentuk'] ?? '-';
+        histori = trans['histori'] ?? '-';
       }
     }
 

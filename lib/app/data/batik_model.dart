@@ -19,15 +19,21 @@ class BatikModel {
   });
 
   factory BatikModel.fromJson(Map<String, dynamic> json) {
-
     List<String> parsedThemes = [];
-    if (json['_BatikTema'] is List) {
-      parsedThemes = (json['_BatikTema'] as List)
-          .map((bt) => bt['Tema']?['nama']?.toString() ?? '')
-          .where((t) => t.isNotEmpty)
-          .toList();
-    }
 
+    if (json['_BatikTema'] is List) {
+      for (var bt in json['_BatikTema']) {
+        final tema = bt['Tema'];
+        if (tema != null && tema['TemaTranslation'] is List) {
+          for (var trans in tema['TemaTranslation']) {
+            final nama = trans['nama']?.toString() ?? '';
+            if (nama.isNotEmpty) {
+              parsedThemes.add(nama);
+            }
+          }
+        }
+      }
+    }
 
     List<PhotoModel> parsedImages = [];
     if (json['Foto'] is List) {

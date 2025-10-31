@@ -38,7 +38,7 @@ class HomeController extends GetxController {
       isLoading.value = true;
 
 
-      final batikData = await _supabaseService.loadBatik();
+      final batikData = await _supabaseService.loadBatikForHomeView();
       final citiesData = await _supabaseService.loadCity();
 
       print(batikData);
