@@ -3,6 +3,7 @@ import 'package:batikpedia/widgets/batik_card.dart';
 import 'package:batikpedia/widgets/batik_skeleton.dart';
 import 'package:batikpedia/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import '../controllers/gallery_controller.dart';
 
@@ -159,21 +160,24 @@ class GalleryView extends GetView<GalleryController> {
               return Stack(
                 children: [
 
-                  GridView.builder(
+                  MasonryGridView.builder(
                     controller: controller.scrollController,
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.72,
+                    gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // tetap 2 kolom
                     ),
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
                     itemCount: controller.batikItems.length,
                     itemBuilder: (context, index) {
                       final item = controller.batikItems[index];
 
-                      if(item.images.isNotEmpty){
-                        var optimizedUrl = controller.optimizeCloudinaryUrl(item.images.first.imagePath, width: 600, quality: 70);
+                      if (item.images.isNotEmpty) {
+                        var optimizedUrl = controller.optimizeCloudinaryUrl(
+                          item.images.first.imagePath,
+                          width: 600,
+                          quality: 70,
+                        );
                         item.images.first.imagePath = optimizedUrl;
                       }
 

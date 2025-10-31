@@ -108,7 +108,11 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildBatikCard(BatikModel item, {Key? key}) {
     final String imageUrl = item.images.isNotEmpty
-        ? controller.optimizeCloudinaryUrl(item.images.first.imagePath, width: 600, quality: 70)
+        ? controller.optimizeCloudinaryUrl(
+      item.images.first.imagePath,
+      width: 600,
+      quality: 70,
+    )
         : '';
 
     return Container(
@@ -138,45 +142,34 @@ class HomeView extends GetView<HomeController> {
               ),
               child: RepaintBoundary(
                 child: imageUrl.isNotEmpty
-                    ? Image.network(
-                  imageUrl,
+                    ? CachedNetworkImage(
+                  imageUrl: imageUrl,
                   width: double.infinity,
-                  // height: 165,
                   fit: BoxFit.cover,
-                  cacheWidth: 600,
-                  cacheHeight: 600,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Container(
-                      color: Colors.grey[200],
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
                       width: double.infinity,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                              : null,
-                          strokeWidth: 2,
-                        ),
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    print('Error loading image: $error');
-                    return Container(
-                      color: Colors.grey[200],
-                      width: double.infinity,
-                      child: const Icon(
-                        Icons.broken_image,
-                        size: 50,
-                        color: Colors.grey,
-                      ),
-                    );
-                  },
+                      height: 180, // sesuaikan tinggi placeholder
+                      color: Colors.white,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.grey[200],
+                    width: double.infinity,
+                    height: 180,
+                    child: const Icon(
+                      Icons.broken_image,
+                      size: 50,
+                      color: Colors.grey,
+                    ),
+                  ),
                 )
                     : Container(
                   color: Colors.grey[200],
                   width: double.infinity,
+                  height: 180,
                   child: const Icon(
                     Icons.image,
                     size: 50,
@@ -206,15 +199,16 @@ class HomeView extends GetView<HomeController> {
                     padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Color(0xFF0B506C),
+                      color: const Color(0xFF0B506C),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      item.themes.first[0].toUpperCase() + item.themes.first.substring(1),
+                      item.themes.first[0].toUpperCase() +
+                          item.themes.first.substring(1),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
-                        fontWeight: FontWeight.w600
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -300,6 +294,7 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
+
   Widget _buildCityCard(CityModel city) {
     return GestureDetector(
       onTap: () => controller.onCityPressed(city),
@@ -328,10 +323,18 @@ class HomeView extends GetView<HomeController> {
                     ? CachedNetworkImage(
                   imageUrl: city.imagePath,
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    color: Colors.grey[200],
-                    child: const Center(
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(

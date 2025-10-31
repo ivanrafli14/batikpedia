@@ -29,7 +29,7 @@ class SupabaseService{
       }
     }
 
-    final response = await query.order('tahun', ascending: false).range(start, end);
+    final response = await query.order('id', ascending: false).range(start, end);
 
     print("Batik:");
     print(response);
