@@ -8,6 +8,10 @@ class NavbarController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    final args = Get.arguments;
+    if (args != null && args['startTab'] != null) {
+      currentTab.value = args['startTab'];
+    }
   }
 
   @override

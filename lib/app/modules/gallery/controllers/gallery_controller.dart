@@ -16,7 +16,7 @@ class GalleryController extends GetxController {
 
   final cityFilters = <String>[].obs;
   final selectedFilters = <String>[].obs;
-  var showFilters = false.obs;
+  var showFilters = true.obs;
 
   var searchQuery = ''.obs;
   final scrollController = ScrollController();
@@ -27,8 +27,15 @@ class GalleryController extends GetxController {
   void onInit() {
     super.onInit();
 
+    final filterParam = Get.arguments?['filter'];
+    if (filterParam != null) {
+      searchQuery.value = filterParam;
+      selectedFilters.assign(filterParam);
+    }
+
     fetchBatik();
     fetchCity();
+
 
     scrollController.addListener(() {
       if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 200 &&

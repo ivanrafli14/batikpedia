@@ -115,107 +115,110 @@ class HomeView extends GetView<HomeController> {
     )
         : '';
 
-    return Container(
-      key: key,
-      width: 180,
-      margin: const EdgeInsets.symmetric(horizontal: 7),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(18),
-                topRight: Radius.circular(18),
-              ),
-              child: RepaintBoundary(
-                child: imageUrl.isNotEmpty
-                    ? CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: double.infinity,
-                      height: 180, // sesuaikan tinggi placeholder
-                      color: Colors.white,
+    return GestureDetector(
+      onTap: () => controller.onBatikItemPressed(item),
+      child: Container(
+        key: key,
+        width: 180,
+        margin: const EdgeInsets.symmetric(horizontal: 7),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(18),
+                  topRight: Radius.circular(18),
+                ),
+                child: RepaintBoundary(
+                  child: imageUrl.isNotEmpty
+                      ? CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: double.infinity,
+                        height: 180, // sesuaikan tinggi placeholder
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey[200],
+                      width: double.infinity,
+                      height: 180,
+                      child: const Icon(
+                        Icons.broken_image,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  )
+                      : Container(
                     color: Colors.grey[200],
                     width: double.infinity,
                     height: 180,
                     child: const Icon(
-                      Icons.broken_image,
+                      Icons.image,
                       size: 50,
                       color: Colors.grey,
                     ),
                   ),
-                )
-                    : Container(
-                  color: Colors.grey[200],
-                  width: double.infinity,
-                  height: 180,
-                  child: const Icon(
-                    Icons.image,
-                    size: 50,
-                    color: Colors.grey,
-                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                if (item.themes.isNotEmpty)
-                  Container(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF0B506C),
-                      borderRadius: BorderRadius.circular(20),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: Text(
-                      item.themes.first[0].toUpperCase() +
-                          item.themes.first.substring(1),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                  ),
+                  const SizedBox(height: 8),
+                  if (item.themes.isNotEmpty)
+                    Container(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0B506C),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        item.themes.first[0].toUpperCase() +
+                            item.themes.first.substring(1),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

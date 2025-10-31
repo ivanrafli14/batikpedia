@@ -1,5 +1,8 @@
 import 'package:batikpedia/app/data/batik_model.dart';
 import 'package:batikpedia/app/data/city_model.dart';
+import 'package:batikpedia/app/modules/gallery/controllers/gallery_controller.dart';
+import 'package:batikpedia/app/modules/navbar/controllers/navbar_controller.dart';
+import 'package:batikpedia/app/routes/app_pages.dart';
 import 'package:batikpedia/app/services/supabase_service.dart';
 import 'package:get/get.dart';
 
@@ -34,6 +37,7 @@ class HomeController extends GetxController {
     try {
       isLoading.value = true;
 
+
       final batikData = await _supabaseService.loadBatik();
       final citiesData = await _supabaseService.loadCity();
 
@@ -54,19 +58,17 @@ class HomeController extends GetxController {
   }
 
   void onBatikItemPressed(BatikModel item) {
-    Get.snackbar(
-      item.name,
-      'Navigate to detail page',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    Get.toNamed(Routes.DETAIL_BATIK, arguments: {'id': item.id});
   }
 
   void onCityPressed(CityModel city) {
-    Get.snackbar(
-      city.name,
-      'Navigate to city detail page',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    final navbarController = Get.find<NavbarController>();
+    navbarController.changeTab(1);
+
+    final galleryController = Get.find<GalleryController>();
+    galleryController.selectedFilters.value = [city.name];
+    galleryController.refreshData();
+
   }
 
 
@@ -75,11 +77,9 @@ class HomeController extends GetxController {
   }
 
   void onDiscoverMorePressed() {
-    Get.snackbar(
-      'Discover More',
-      'Navigate to cities page',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    final navbarController = Get.find<NavbarController>();
+    navbarController.changeTab(1);
+    Get.find<GalleryController>().selectedFilters.assign('All');
   }
 
   String optimizeCloudinaryUrl(String url, {int width = 600, int quality = 70}) {
