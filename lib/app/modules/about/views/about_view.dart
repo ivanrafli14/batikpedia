@@ -13,15 +13,16 @@ class AboutView extends GetView<AboutController> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: Padding(
-        padding: const EdgeInsets.only(left: 25, right: 25),
+      body: SafeArea(
         child: SingleChildScrollView(
+        padding: const EdgeInsets.only(left: 25, right: 25),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomAppBar(
                 title: 'About',
                 showBackButton: false,
+                padding: EdgeInsets.only(top: 6, bottom: 20),
               ),
 
               Center(

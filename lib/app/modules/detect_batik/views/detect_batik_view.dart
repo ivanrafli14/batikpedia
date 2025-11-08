@@ -64,6 +64,7 @@ class DetectBatikView extends GetView<DetectBatikController> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 70),
                 ],
               ),
             ),

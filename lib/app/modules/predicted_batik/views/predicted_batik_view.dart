@@ -22,7 +22,7 @@ class PredictedBatikView extends GetView<PredictedBatikController> {
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'Recognize Batik',
+          'Detect Batik',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black87,
@@ -79,7 +79,22 @@ class PredictedBatikView extends GetView<PredictedBatikController> {
                     child: Center(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: _buildShimmerImage(controller.imagePath.value!),
+                        child: Stack(
+                          children: [
+                            _buildShimmerImage(controller.imagePath.value!), // 🔹 gambar tetap tampil
+
+                            if (controller.isLoading.value)
+                              Positioned.fill(
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.transparent,
+                                  highlightColor: Colors.white.withOpacity(0.3),
+                                  child: Container(
+                                    color: Colors.white, // important untuk shimmer layer
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -104,8 +119,6 @@ class PredictedBatikView extends GetView<PredictedBatikController> {
                         highlightColor: Colors.grey.shade100,
                         child: Column(
                           children: [
-                            shimmerBar(double.infinity),
-                            shimmerBar(double.infinity),
                             shimmerBar(double.infinity),
                             shimmerBar(double.infinity),
                             shimmerBar(double.infinity),
@@ -274,7 +287,7 @@ class PredictedBatikView extends GetView<PredictedBatikController> {
 
   Widget shimmerBar(double width) {
     return Container(
-      height: 20,
+      height: 24,
       width: width,
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(

@@ -17,7 +17,10 @@ class SplashScreenView extends GetView<SplashScreenController> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
+          child: SafeArea(
+            top: false,
+            bottom: true,
+            child: Center(
           child: Column(
             children: [
               Expanded(
@@ -74,13 +77,14 @@ class SplashScreenView extends GetView<SplashScreenController> {
                       Image.asset('assets/images/gub.png',height: 21),
                     ],
                   ),
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 40),
                 ],
               ),
             ],
           )
 
         ),
+      ),
       )
     );
   }

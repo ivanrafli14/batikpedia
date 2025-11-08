@@ -11,8 +11,9 @@ class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SafeArea(
+    return Scaffold(
+      body: SafeArea(
+
         child: Obx(() {
           if (controller.isLoading.value) {
             return SingleChildScrollView(
@@ -45,7 +46,7 @@ class HomeView extends GetView<HomeController> {
   Widget _buildHeader() {
     return Container(
       width: double.infinity,
-      color: Colors.white,
+      // color: Colors.white,
       padding: const EdgeInsets.all(10),
       child: Column(
         children: [
