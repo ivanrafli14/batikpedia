@@ -37,6 +37,7 @@ class PredictedBatikView extends GetView<PredictedBatikController> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // 🖼 Gambar Batik (selalu tampil)
                 GestureDetector(
@@ -75,48 +76,44 @@ class PredictedBatikView extends GetView<PredictedBatikController> {
                   },
                   child: Hero(
                     tag: "batikImage",
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: _buildShimmerImage(controller.imagePath.value!),
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: _buildShimmerImage(controller.imagePath.value!),
+                      ),
                     ),
                   ),
                 ),
 
                 const SizedBox(height: 20),
 
-                // 🔄 Ganti CircularProgressIndicator dengan shimmer skeleton loader
                 if (controller.isLoading.value)
                   Column(
                     children: [
+                      const Text(
+                        "Analyzing batik pattern...",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
                       Shimmer.fromColors(
                         baseColor: Colors.grey.shade300,
                         highlightColor: Colors.grey.shade100,
                         child: Column(
                           children: [
-                            Container(
-                              height: 20,
-                              width: 180,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Container(
-                              height: 14,
-                              width: 240,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                            shimmerBar(double.infinity),
+                            shimmerBar(double.infinity),
+                            shimmerBar(double.infinity),
+                            shimmerBar(double.infinity),
+                            shimmerBar(double.infinity),
+                            shimmerBar(double.infinity),
+                            shimmerBar(double.infinity),
+                            shimmerBar(double.infinity),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        "Analyzing batik pattern...",
-                        style: TextStyle(color: Colors.grey),
                       ),
                     ],
                   ),
@@ -229,7 +226,6 @@ class PredictedBatikView extends GetView<PredictedBatikController> {
     );
   }
 
-  // 🔄 Gambar dengan shimmer
   Widget _buildShimmerImage(String path) {
     return FutureBuilder(
       future: File(path).exists(),
@@ -239,8 +235,8 @@ class PredictedBatikView extends GetView<PredictedBatikController> {
             baseColor: Colors.grey.shade300,
             highlightColor: Colors.grey.shade100,
             child: Container(
-              height: 260,
-              width: double.infinity,
+              height: 300,
+              width: 300,
               decoration: BoxDecoration(
                 color: Colors.grey.shade300,
                 borderRadius: BorderRadius.circular(16),
@@ -254,16 +250,16 @@ class PredictedBatikView extends GetView<PredictedBatikController> {
             borderRadius: BorderRadius.circular(16),
             child: Image.file(
               File(path),
-              height: 260,
-              width: double.infinity,
+              height: 300,
+              width: 300,
               fit: BoxFit.cover,
             ),
           );
         }
 
         return Container(
-          height: 260,
-          width: double.infinity,
+          height: 300,
+          width: 300,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: Colors.grey.shade200,
@@ -275,4 +271,17 @@ class PredictedBatikView extends GetView<PredictedBatikController> {
       },
     );
   }
+
+  Widget shimmerBar(double width) {
+    return Container(
+      height: 20,
+      width: width,
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade300,
+        borderRadius: BorderRadius.circular(8),
+      ),
+    );
+  }
+
 }

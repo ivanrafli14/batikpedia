@@ -46,18 +46,19 @@ class DetectBatikController extends GetxController {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: imagePath,
       compressQuality: 90,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1), // 🔥 Kunci 1:1
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: 'Crop Image',
           toolbarColor: const Color(0xFF0B506C),
           toolbarWidgetColor: Colors.white,
-          hideBottomControls: false,
-          lockAspectRatio: false,
+          hideBottomControls: true,
+          lockAspectRatio: true,
           activeControlsWidgetColor: const Color(0xFF0B506C),
         ),
         IOSUiSettings(
           title: 'Crop Image',
-          aspectRatioLockEnabled: false,
+          aspectRatioLockEnabled: true,
         ),
       ],
     );
