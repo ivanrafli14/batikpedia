@@ -16,6 +16,8 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/navbar/bindings/navbar_binding.dart';
 import '../modules/navbar/views/navbar_view.dart';
+import '../modules/predicted_batik/bindings/predicted_batik_binding.dart';
+import '../modules/predicted_batik/views/predicted_batik_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 
@@ -71,6 +73,11 @@ class AppPages {
       name: _Paths.DETECT_BATIK,
       page: () => const DetectBatikView(),
       binding: DetectBatikBinding(),
+    ),
+    GetPage(
+      name: _Paths.PREDICTED_BATIK,
+      page: () => const PredictedBatikView(),
+      binding: PredictedBatikBinding(),
     ),
   ];
 }

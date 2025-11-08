@@ -12,6 +12,7 @@ abstract class Routes {
   static const DETAIL_BATIK = _Paths.DETAIL_BATIK;
   static const GENERATE_BATIK = _Paths.GENERATE_BATIK;
   static const DETECT_BATIK = _Paths.DETECT_BATIK;
+  static const PREDICTED_BATIK = _Paths.PREDICTED_BATIK;
 }
 
 abstract class _Paths {
@@ -25,4 +26,5 @@ abstract class _Paths {
   static const DETAIL_BATIK = '/detail-batik';
   static const GENERATE_BATIK = '/generate-batik';
   static const DETECT_BATIK = '/detect-batik';
+  static const PREDICTED_BATIK = '/predicted-batik';
 }

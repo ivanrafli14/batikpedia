@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:batikpedia/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -70,9 +71,10 @@ class DetectBatikController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
       );
 
-      // TODO: Kirim ke model AI deteksi batik kamu
-      // misalnya:
-      // await detectBatik(File(croppedFile.path));
+      Get.toNamed(Routes.PREDICTED_BATIK, arguments: {
+        'imagePath': croppedFile.path,
+      });
+      
     } else {
       Get.snackbar(
         'Cancelled',
