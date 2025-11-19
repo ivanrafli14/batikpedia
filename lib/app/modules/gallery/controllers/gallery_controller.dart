@@ -22,6 +22,8 @@ class GalleryController extends GetxController {
   final scrollController = ScrollController();
 
   var _supabaseService = SupabaseService();
+  final textController = TextEditingController();
+
 
   @override
   void onInit() {
@@ -48,6 +50,8 @@ class GalleryController extends GetxController {
     debounce(searchQuery, (_) {
       refreshData(); // reload ketika search berubah
     }, time: const Duration(milliseconds: 500));
+
+    textController.text = searchQuery.value;
   }
 
   @override

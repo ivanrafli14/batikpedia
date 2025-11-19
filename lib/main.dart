@@ -22,7 +22,8 @@ Future<void>  main() async {
 
   runApp(
     GetMaterialApp(
-      title: "Application",
+      debugShowCheckedModeBanner: false,
+      title: "BatikPedia",
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFFAFAFA),
         primaryColor: const Color(0xFF033049),

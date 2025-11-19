@@ -113,7 +113,7 @@ class AboutView extends GetView<AboutController> {
                 label: 'Website',
                 imagePath: 'assets/images/batik_bg.png',
                 onTap: () {
-                  launchUrl(Uri.parse('https://e-batik.vercel.app'));
+                  launchUrl(Uri.parse('https://batikpedia.cloud/'));
                 },
               ),
 

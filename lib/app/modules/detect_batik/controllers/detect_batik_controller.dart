@@ -66,11 +66,11 @@ class DetectBatikController extends GetxController {
     if (croppedFile != null) {
       croppedImagePath.value = croppedFile.path;
 
-      Get.snackbar(
-        'Image Ready',
-        'Cropped successfully!',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      // Get.snackbar(
+      //   'Image Ready',
+      //   'Cropped successfully!',
+      //   snackPosition: SnackPosition.BOTTOM,
+      // );
 
       Get.toNamed(Routes.PREDICTED_BATIK, arguments: {
         'imagePath': croppedFile.path,

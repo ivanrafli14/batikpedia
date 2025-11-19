@@ -41,6 +41,7 @@ class GalleryView extends GetView<GalleryController> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextField(
+                          controller: controller.textController,
                           onChanged: controller.onSearchChanged,
                           decoration: const InputDecoration(
                             hintText: 'Search',

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 
 class AiService {
-  final String baseUrl = "http://10.97.5.15:8000";
+  final String baseUrl = "http://31.97.66.47:5000";
 
   Future<PredictionResponse> predictBatik(File imageFile) async {
     final uri = Uri.parse("$baseUrl/predict");
